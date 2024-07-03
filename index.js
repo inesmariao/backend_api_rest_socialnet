@@ -22,8 +22,20 @@ connection();
 const app = express();
 const puerto = process.env.PORT || 3900;
 
+// Lista de orígenes permitidos
+const allowedOrigins = ['http://localhost:5173', 'https://backend-api-rest-socialnet.vercel.app'];
+
 // Configurar cors: permite que las peticiones se hagan correctamente
-app.use(cors());
+// Configurar CORS dinámicamente
+app.use(cors((req, callback) => {
+  let corsOptions;
+  if (allowedOrigins.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true, methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', credentials: true };
+  } else {
+    corsOptions = { origin: false }; // No permitir este origen
+  }
+  callback(null, corsOptions); // Enviar las opciones de CORS
+}));
 
 // Conversión de datos (body a objetos JS)
 app.use(bodyParser.json());
