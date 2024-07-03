@@ -5,6 +5,7 @@ import cors from "cors";
 import UserRoutes from './routes/user.js'
 import PublicationRoutes from './routes/publications.js'
 import FollowRoutes from './routes/follow.js'
+import bodyParser from 'body-parser';
 
 
 // Mensaje de bienvenida
@@ -22,8 +23,8 @@ const puerto = process.env.PORT || 3900;
 app.use(cors());
 
 // Conversión de datos (body a objetos JS)
-app.use(json());
-app.use(urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurar rutas
 app.use('/api/user', UserRoutes);
