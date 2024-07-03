@@ -22,20 +22,17 @@ connection();
 const app = express();
 const puerto = process.env.PORT || 3900;
 
-// Lista de orígenes permitidos
-const allowedOrigins = ['http://localhost:5173', 'https://backend-api-rest-socialnet.vercel.app'];
-
-// Configurar cors: permite que las peticiones se hagan correctamente
-// Configurar CORS dinámicamente
-app.use(cors((req, callback) => {
-  let corsOptions;
-  if (allowedOrigins.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true, methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', credentials: true };
+// Configurar CORS dinámicamente en Vercel
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir todos los orígenes, ajusta según necesites
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Métodos permitidos
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); // Encabezados permitidos
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
   } else {
-    corsOptions = { origin: false }; // No permitir este origen
+    next();
   }
-  callback(null, corsOptions); // Enviar las opciones de CORS
-}));
+});
 
 // Conversión de datos (body a objetos JS)
 app.use(bodyParser.json());
