@@ -58,3 +58,5 @@ app.use('/uploads/publications', express.static(path.join(__dirname, 'uploads', 
 app.listen(puerto, () => {
   console.log("Servidor de NODE corriendo en el puerto", puerto)
 });
+
+export default app; // Exportar la aplicación de Express para Vercel
